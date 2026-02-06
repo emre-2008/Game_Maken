@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <title>Snake</title>
+
+  <style>
+    /* reset */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #020617, #000);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      color: #e5e7eb;
+    }
+
+    /* game card */
+    .game-container {
+      background: #020617;
+      padding: 20px 24px 24px;
+      border-radius: 16px;
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,0.05),
+        0 20px 40px rgba(0,0,0,0.6);
+      width: 440px;
+    }
+
+    h1 {
+      font-size: 1.6rem;
+      margin-bottom: 12px;
+      text-align: center;
+      letter-spacing: 1px;
+    }
+
+    /* top bar */
+    .top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .score-box {
+      background: #020617;
+      padding: 8px 14px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.08);
+      font-weight: 600;
+    }
+
+    .score-box span {
+      color: #22c55e;
+      margin-left: 6px;
+    }
+
+    button {
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+      border: none;
+      color: #022c22;
+      font-weight: 700;
+      padding: 8px 18px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      box-shadow: 0 6px 16px rgba(34,197,94,0.35);
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 22px rgba(34,197,94,0.45);
+    }
+
+    button:active {
+      transform: translateY(0);
+      box-shadow: 0 4px 12px rgba(34,197,94,0.35);
+    }
+
+    /* canvas */
+    canvas {
+      display: block;
+      margin: 0 auto;
+      background: #020617;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.03);
+    }
+
+    /* footer text */
+    .hint {
+      text-align: center;
+      font-size: 0.8rem;
+      opacity: 0.6;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="game-container">
+    <h1>🐍 Slangetje</h1>
+
+    <div class="top-bar">
+      <div class="score-box">
+        Score: <span id="score">0</span>
+      </div>
+      <button id="startBtn">Start</button>
+    </div>
+
+    <canvas id="game" width="400" height="400"></canvas>
+
+    <div class="hint">Gebruik de pijltjestoetsen</div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
