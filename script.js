@@ -2,6 +2,8 @@ const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
 const scoreEl = document.getElementById("score");
 const startBtn = document.getElementById("startBtn");
+const foodImg = new Image();
+foodImg.src = "BURGER.png";
 
 const box = 20;
 let game = null;
@@ -51,8 +53,8 @@ function draw() {
   });
 
   // eten
-  ctx.fillStyle = "#ef4444";
-  ctx.fillRect(food.x, food.y, box, box);
+ctx.drawImage(foodImg, food.x, food.y, box, box);
+
 
   let head = { ...snake[0] };
 
