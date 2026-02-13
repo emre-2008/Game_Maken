@@ -3,7 +3,7 @@ const ctx = canvas.getContext("2d");
 const scoreEl = document.getElementById("score");
 const startBtn = document.getElementById("startBtn");
 const foodImg = new Image();
-foodImg.src = "BURGER.png";
+foodImg.src = /Images/BURGER.png;
 
 const box = 20;
 let game = null;
