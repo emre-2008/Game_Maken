@@ -48,10 +48,60 @@ function draw() {
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   // slang
-  snake.forEach((part, i) => {
-    ctx.fillStyle = i === 0 ? "#22c55e" : "#16a34a";
-    ctx.fillRect(part.x, part.y, box, box);
-  });
+  // ==== SLANG TEKENEN ====
+ctx.lineJoin = "round";
+ctx.lineCap = "round";
+ctx.lineWidth = box - 4;
+
+// body kleur
+ctx.strokeStyle = "#22c55e";
+
+ctx.beginPath();
+
+for (let i = 0; i < snake.length; i++) {
+  const part = snake[i];
+  const centerX = part.x + box / 2;
+  const centerY = part.y + box / 2;
+
+  if (i === 0) {
+    ctx.moveTo(centerX, centerY);
+  } else {
+    ctx.lineTo(centerX, centerY);
+  }
+}
+
+ctx.stroke();
+
+
+// ==== KOP EXTRA CARTOON ====
+const centerX = snake[0].x + box / 2;
+const centerY = snake[0].y + box / 2;
+
+// kop rond maken
+ctx.beginPath();
+ctx.fillStyle = "#4ade80";
+ctx.arc(centerX, centerY, box / 2, 0, Math.PI * 2);
+ctx.fill();
+
+// ogen
+ctx.fillStyle = "white";
+ctx.beginPath();
+ctx.arc(centerX - 4, centerY - 3, 3, 0, Math.PI * 2);
+ctx.fill();
+
+ctx.beginPath();
+ctx.arc(centerX + 4, centerY - 3, 3, 0, Math.PI * 2);
+ctx.fill();
+
+ctx.fillStyle = "black";
+ctx.beginPath();
+ctx.arc(centerX - 4, centerY - 3, 1.5, 0, Math.PI * 2);
+ctx.fill();
+
+ctx.beginPath();
+ctx.arc(centerX + 4, centerY - 3, 1.5, 0, Math.PI * 2);
+ctx.fill();
+
 
   // eten
 ctx.drawImage(foodImg, food.x, food.y, box, box);
