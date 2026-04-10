@@ -15,17 +15,19 @@ const box = 20;
 
 let snake;
 let direction;
+let nextDirection;
+
 let food;
 let bomb;
 
 let score = 0;
 let hearts = 3;
 
-let gameSpeed = 180; // rustiger begin
+let gameSpeed = 180;
 
 let running = false;
 
-let lastTime = 0;
+let lastMoveTime = 0;
 
 
 // BESTURING
@@ -33,16 +35,16 @@ let lastTime = 0;
 document.addEventListener("keydown", e => {
 
 if ((e.key === "a" || e.key === "ArrowLeft") && direction !== "RIGHT")
-direction = "LEFT";
+nextDirection = "LEFT";
 
 if ((e.key === "w" || e.key === "ArrowUp") && direction !== "DOWN")
-direction = "UP";
+nextDirection = "UP";
 
 if ((e.key === "d" || e.key === "ArrowRight") && direction !== "LEFT")
-direction = "RIGHT";
+nextDirection = "RIGHT";
 
 if ((e.key === "s" || e.key === "ArrowDown") && direction !== "UP")
-direction = "DOWN";
+nextDirection = "DOWN";
 
 });
 
@@ -51,9 +53,10 @@ direction = "DOWN";
 
 function startGame() {
 
-snake = [{ x: 200, y: 200 }];
+snake = [{ x: 10, y: 10 }];
 
 direction = "RIGHT";
+nextDirection = "RIGHT";
 
 score = 0;
 hearts = 3;
@@ -68,8 +71,6 @@ updateHearts();
 
 food = randomFood();
 bomb = randomBomb();
-
-lastTime = 0;
 
 requestAnimationFrame(gameLoop);
 
@@ -88,18 +89,16 @@ do {
 
 newFood = {
 
-x: Math.floor(Math.random() * 20) * box,
-y: Math.floor(Math.random() * 20) * box
+x: Math.floor(Math.random() * 20),
+y: Math.floor(Math.random() * 20)
 
 };
 
 } while (
-
-snake.some(segment =>
-segment.x === newFood.x &&
-segment.y === newFood.y
+snake.some(part =>
+part.x === newFood.x &&
+part.y === newFood.y
 )
-
 );
 
 return newFood;
@@ -117,22 +116,18 @@ do {
 
 newBomb = {
 
-x: Math.floor(Math.random() * 20) * box,
-y: Math.floor(Math.random() * 20) * box
+x: Math.floor(Math.random() * 20),
+y: Math.floor(Math.random() * 20)
 
 };
 
 } while (
-
-snake.some(segment =>
-segment.x === newBomb.x &&
-segment.y === newBomb.y
+snake.some(part =>
+part.x === newBomb.x &&
+part.y === newBomb.y
 )
-
 ||
-
 (newBomb.x === food.x && newBomb.y === food.y)
-
 );
 
 return newBomb;
@@ -162,124 +157,84 @@ gameSpeed -= 10;
 }
 
 
-// GAME LOOP (60 FPS ENGINE)
+// GAME LOOP
 
-function gameLoop(currentTime) {
+function gameLoop(time) {
 
 if (!running) return;
 
-if (!lastTime) lastTime = currentTime;
+if (time - lastMoveTime > gameSpeed) {
 
-const delta = currentTime - lastTime;
+update();
 
-if (delta > gameSpeed) {
-
-draw();
-
-lastTime = currentTime;
+lastMoveTime = time;
 
 }
+
+draw();
 
 requestAnimationFrame(gameLoop);
 
 }
 
 
-// DRAW GAME
+// UPDATE POSITIES
 
-function draw() {
+function update() {
 
-ctx.fillStyle = "#0f172a";
-
-ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-
-// SLANG BODY
-
-ctx.lineJoin = "round";
-
-ctx.lineCap = "round";
-
-ctx.lineWidth = box - 4;
-
-ctx.strokeStyle = "#22c55e";
-
-ctx.beginPath();
-
-for (let i = 0; i < snake.length; i++) {
-
-const part = snake[i];
-
-const centerX = part.x + box / 2;
-const centerY = part.y + box / 2;
-
-if (i === 0)
-ctx.moveTo(centerX, centerY);
-else
-ctx.lineTo(centerX, centerY);
-
-}
-
-ctx.stroke();
-
-
-// SLANG KOP
-
-const centerX = snake[0].x + box / 2;
-const centerY = snake[0].y + box / 2;
-
-ctx.beginPath();
-
-ctx.fillStyle = "#4ade80";
-
-ctx.arc(centerX, centerY, box / 2, 0, Math.PI * 2);
-
-ctx.fill();
-
-
-// FOOD
-
-ctx.drawImage(foodImg, food.x, food.y, box, box);
-
-
-// BOMB verschijnt vanaf score 3
-
-if (score >= 3) {
-
-ctx.beginPath();
-
-ctx.fillStyle = "#ef4444";
-
-ctx.arc(
-bomb.x + box / 2,
-bomb.y + box / 2,
-box / 2,
-0,
-Math.PI * 2
-);
-
-ctx.fill();
-
-ctx.drawImage(bombImg, bomb.x, bomb.y, box, box);
-
-}
-
-
-// NIEUWE HEAD
+direction = nextDirection;
 
 let head = { ...snake[0] };
 
-if (direction === "LEFT") head.x -= box;
-if (direction === "UP") head.y -= box;
-if (direction === "RIGHT") head.x += box;
-if (direction === "DOWN") head.y += box;
+if (direction === "LEFT") head.x--;
+if (direction === "RIGHT") head.x++;
+if (direction === "UP") head.y--;
+if (direction === "DOWN") head.y++;
 
 
-// BOM RAKEN
+// SELF COLLISION
 
-if (score >= 3 &&
+if (
+snake.some(part =>
+part.x === head.x &&
+part.y === head.y
+)
+) {
+
+running = false;
+
+alert("Game Over! Je raakte jezelf!");
+
+return;
+
+}
+
+
+// WALL COLLISION
+
+if (
+head.x < 0 ||
+head.y < 0 ||
+head.x >= 20 ||
+head.y >= 20
+) {
+
+running = false;
+
+alert("Game Over! Score: " + score);
+
+return;
+
+}
+
+
+// BOMB COLLISION
+
+if (
+score >= 3 &&
 head.x === bomb.x &&
-head.y === bomb.y) {
+head.y === bomb.y
+) {
 
 hearts--;
 
@@ -293,6 +248,8 @@ running = false;
 
 alert("💀 Geen levens meer! Score: " + score);
 
+return;
+
 }
 
 return;
@@ -300,9 +257,12 @@ return;
 }
 
 
-// FOOD RAKEN
+// FOOD COLLISION
 
-if (head.x === food.x && head.y === food.y) {
+if (
+head.x === food.x &&
+head.y === food.y
+) {
 
 score++;
 
@@ -323,30 +283,77 @@ snake.pop();
 }
 
 
-// MUUR OF ZICHZELF
-
-if (
-
-head.x < 0 ||
-head.y < 0 ||
-head.x >= canvas.width ||
-head.y >= canvas.height ||
-snake.some(segment =>
-segment.x === head.x &&
-segment.y === head.y
-)
-
-) {
-
-running = false;
-
-alert("Game Over! Score: " + score);
-
-return;
+snake.unshift(head);
 
 }
 
 
-snake.unshift(head);
+// DRAW GAME
+
+function draw() {
+
+ctx.fillStyle = "#0f172a";
+ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+
+// SLANG
+
+ctx.fillStyle = "#22c55e";
+
+snake.forEach((part, index) => {
+
+ctx.beginPath();
+
+ctx.arc(
+part.x * box + box / 2,
+part.y * box + box / 2,
+box / 2,
+0,
+Math.PI * 2
+);
+
+ctx.fill();
+
+});
+
+
+// FOOD
+
+ctx.drawImage(
+foodImg,
+food.x * box,
+food.y * box,
+box,
+box
+);
+
+
+// BOMB
+
+if (score >= 3) {
+
+ctx.beginPath();
+
+ctx.fillStyle = "#ef4444";
+
+ctx.arc(
+bomb.x * box + box / 2,
+bomb.y * box + box / 2,
+box / 2,
+0,
+Math.PI * 2
+);
+
+ctx.fill();
+
+ctx.drawImage(
+bombImg,
+bomb.x * box,
+bomb.y * box,
+box,
+box
+);
+
+}
 
 }

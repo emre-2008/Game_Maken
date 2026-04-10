@@ -1,0 +1,122 @@
+Snake Game – Webversie
+ Over dit project
+
+Dit project is een browser-gebaseerde Snake Game gemaakt met HTML5 Canvas, CSS en JavaScript.
+De speler bestuurt een slang die burgers eet om punten te verzamelen. Tijdens het spel verschijnen bommen die levens kosten wanneer je ze raakt.
+
+Het doel van het spel is om een zo hoog mogelijke score te behalen zonder tegen muren, jezelf of te veel bommen aan te botsen.
+
+Gameplay--
+
+De speler kan:
+
+bewegen met WASD
+bewegen met pijltjestoetsen
+burgers eten om punten te verdienen
+bommen vermijden om levens te behouden
+sneller spelen naarmate de score stijgt
+
+De speler start met:
+
+❤️ 3 levens
+🍔 score = 0
+💣 bom verschijnt vanaf score 3
+
+Wanneer alle levens op zijn is het spel afgelopen.
+
+⚙️ Gebruikte technieken
+
+Dit project is gemaakt met:
+
+HTML5
+CSS3
+JavaScript
+Canvas API
+
+Waarom deze technieken?
+
+HTML en Canvas zorgen voor het speelveld
+CSS maakt de interface duidelijk en modern
+JavaScript regelt de game-logica en interactie
+
+Deze combinatie werkt goed voor browsergames zonder extra frameworks.
+
+📂 Projectstructuur
+snake-game/
+│
+├── index.html
+├── script.js
+│
+└── Images/
+    ├── BURGER.png
+    └── bom.png
+
+Beschrijving:
+
+index.html
+Bevat de layout en het canvas
+
+script.js
+Bevat alle game-logica
+
+Images/
+Bevat afbeeldingen voor food en bommen
+
+🕹️ Besturing
+Toets	Actie
+W / ↑	omhoog
+S / ↓	omlaag
+A / ←	links
+D / →	rechts
+🚀 Hoe start je het spel
+
+Stap 1
+Download of open het project
+
+Stap 2
+Open index.html in je browser
+
+Stap 3
+Klik op Start Game
+
+Klaar 🎉
+
+🧠 Game features
+
+Dit spel bevat:
+
+✅ bewegende slang
+✅ score systeem
+✅ levens systeem (3 hartjes)
+✅ bom obstakels
+✅ snelheid stijgt bij hogere score
+✅ duidelijke UI
+✅ start knop
+✅ game over melding
+
+🔒 Security & privacy
+
+Dit spel:
+
+gebruikt geen database
+slaat geen persoonsgegevens op
+verstuurt geen data naar internet
+
+Alles draait lokaal in de browser.
+
+📈 Mogelijke uitbreidingen
+
+Toekomstige verbeteringen kunnen zijn:
+
+⭐ highscore opslaan
+⭐ geluidseffecten toevoegen
+⭐ levels toevoegen
+⭐ pause knop
+⭐ multiplayer mode
+⭐ mobiele besturing
+
+👨‍💻 Gemaakt door
+
+Naam: (vul hier je naam in)
+Project: Snake Game
+Techniek: HTML / CSS / JavaScript
